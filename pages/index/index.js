@@ -264,6 +264,7 @@ Page({
         iconPath: '/images/oil-station.png',
         width: 50,
         height: 50,
+        // 气泡callout
         callout: {
           content: stores[i].name,
           color: '#ffffff',
