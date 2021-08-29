@@ -22,7 +22,14 @@ Page({
     markers: [],
     weather: {},
     appAuth: false,   // 小程序定位权限
-    wxAuth: false     // 微信定位权限
+    wxAuth: false,     // 微信定位权限
+    isPioAdrPopping: false,     //pio地址是否弹出
+    pioAdrAnimPlus: {},         //pio地址动画
+    pioIsShow: false,
+    addressTitle: '',//poi地址标题
+    addressDes: '', //poi地址详细 
+    distance: '',  //poi距离: 起点到终点的距离，单位：米，
+    duration: '' //poi时间: 表示从起点到终点的结合路况的时间，秒为单位 注：步行方式不计算耗时，该值始终为0 
   },
 
   /**
@@ -245,6 +252,69 @@ Page({
     })
   },
 
+  //显示对话框
+  showModal: function(event) {
+    console.log(event);
+    var i = event.markerId;
+    var url = 'https://wedrive.mapbar.com/opentsp/cms/api/gas/searchGasStationById';
+    var that = this;
+    console.log('====get_detail====')
+    wx.request({ 
+      url: url,
+      data: {
+        ids: i,
+        cata: "json"
+      },
+      success: function(res) {
+        console.log(res);
+        that.setData({
+          myall: res.data.data
+        });
+      }
+    });
+ 
+    // 显示遮罩层
+    var animation = wx.createAnimation({
+      duration: 200,
+      timingFunction: "linear",
+      delay: 0
+    })
+    this.animation = animation
+    animation.translateY(300).step()
+    this.setData({
+      animationData: animation.export(),
+      showModalStatus: true
+    })
+    setTimeout(function() {
+      animation.translateY(0).step()
+      this.setData({
+        animationData: animation.export()
+      })
+    }.bind(this), 200)
+  },
+
+  //隐藏对话框
+  hideModal: function() {
+    // 隐藏遮罩层
+    var animation = wx.createAnimation({
+      duration: 200,
+      timingFunction: "linear",
+      delay: 0
+    })
+    this.animation = animation
+    animation.translateY(300).step()
+    this.setData({
+      animationData: animation.export(),
+    })
+    setTimeout(function() {
+      animation.translateY(0).step()
+      this.setData({
+        animationData: animation.export(),
+        showModalStatus: false
+      })
+    }.bind(this), 200)
+  },
+
   /**
    * 设置附近加油站的标记
    *
@@ -257,7 +327,7 @@ Page({
       stores[i].name = stores[i].name;
       markers.push({
         id: i,
-        mid: stores[i].id,
+        markerId: stores[i].id,
         latitude: stores[i].lat,
         longitude: stores[i].lon,
         title: stores[i].name,
@@ -276,7 +346,10 @@ Page({
       })
     }
 
-    this.setData({ markers: markers });
+    this.setData({
+       markers: markers,
+       pioIsShow: true
+      });
   },
 
   /**
