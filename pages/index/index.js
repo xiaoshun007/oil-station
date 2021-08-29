@@ -171,20 +171,48 @@ Page({
    * @param {object} location
    */
   showStores(location) {
-    BMap.search({
-      query: '加油站',
-      location: `${location.latitude},${location.longitude}`,
-      success: (res) => {
-        if (res.originalData.results.length) {
-          this.setMarkers(res.originalData.results);
+    const _this = this;
+    // 拼接请求url
+    const url = 'https://wedrive.mapbar.com/opentsp/cms/api/gas/searchGasStation';
+    // 请求数据
+    wx.request({
+      url: url,
+      data: {
+        "lon": `${location.longitude}`,
+        "lat": `${location.latitude}`,
+        "cata": "json" 
+      },
+      header: {
+        'content-type': 'json' // 默认值
+      },
+      success: function(res) {
+        console.log(res.data);
+        // 赋值
+        if (res.data.content.length) {
+          _this.setMarkers(res.data.content);
         } else {
-          this.showToast('没有搜索到您附近的加油站');
+          _this.showToast('没有搜索到您附近的加油站');
         }
       },
       fail: () => {
-        this.showToast('网络出了点问题，请稍后再试');
+        _this.showToast('网络出了点问题，请稍后再试');
       }
     });
+
+    // BMap.search({
+    //   query: '加油站',
+    //   location: `${location.latitude},${location.longitude}`,
+    //   success: (res) => {
+    //     if (res.originalData.results.length) {
+    //       this.setMarkers(res.originalData.results);
+    //     } else {
+    //       this.showToast('没有搜索到您附近的加油站');
+    //     }
+    //   },
+    //   fail: () => {
+    //     this.showToast('网络出了点问题，请稍后再试');
+    //   }
+    // });
   },
 
   /**
@@ -226,11 +254,12 @@ Page({
     const markers = [];
 
     for (let i = 0; i < stores.length; i++) {
-      stores[i].name = this.getShortStoreName(stores[i].name);
+      stores[i].name = stores[i].name;
       markers.push({
         id: i,
-        latitude: stores[i].location.lat,
-        longitude: stores[i].location.lng,
+        mid: stores[i].id,
+        latitude: stores[i].lat,
+        longitude: stores[i].lon,
         title: stores[i].name,
         iconPath: '/images/oil-station.png',
         width: 50,
