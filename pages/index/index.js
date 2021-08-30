@@ -21,6 +21,7 @@ Page({
     longitude: 116.397390,
     markers: [],
     weather: {},
+    oils: [],
     appAuth: false,   // 小程序定位权限
     wxAuth: false,     // 微信定位权限
     isPioAdrPopping: false,     //pio地址是否弹出
@@ -193,7 +194,7 @@ Page({
         'content-type': 'json' // 默认值
       },
       success: function(res) {
-        console.log(res.data);
+        // console.log(res.data);
         // 赋值
         if (res.data.content.length) {
           _this.setMarkers(res.data.content);
@@ -253,22 +254,26 @@ Page({
   },
 
   //显示对话框
-  showModal: function(event) {
+  showMapModal: function(event) {
     console.log(event);
+    console.log(event.markerId);
     var i = event.markerId;
+    const markers = this.data.markers;
+    console.log(markers[i].markerId);
     var url = 'https://wedrive.mapbar.com/opentsp/cms/api/gas/searchGasStationById';
     var that = this;
     console.log('====get_detail====')
     wx.request({ 
       url: url,
       data: {
-        ids: i,
+        ids: markers[i].markerId,
         cata: "json"
       },
       success: function(res) {
         console.log(res);
+        that.setOilPrice(res.data.content[0].prices);
         that.setData({
-          myall: res.data.data
+          oils: res.data.content[0].prices
         });
       }
     });
@@ -349,7 +354,19 @@ Page({
     this.setData({
        markers: markers,
        pioIsShow: true
-      });
+    });
+    // console.log(markers)
+  },
+
+  setOilPrice(prices) {
+    const oilPrice = {
+      oil: ""
+    };
+
+    for (let i = 0; i < prices.length; i++) {
+      oilPrice.oilType += prices[i].oiltype + ": " + prices[i].price;
+    }
+    console.log(oilPrice)
   },
 
   /**

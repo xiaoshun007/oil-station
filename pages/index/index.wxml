@@ -7,8 +7,9 @@
     controls="{{controls}}"
     bindcontroltap="controltap"
     markers="{{markers}}"
+    data-id="{{markers}}"
     bindregionchange="regionchange"
-    bindmarkertap="showModal"
+    bindmarkertap="showMapModal"
     show-location> 
   </map>
   <cover-view class="weather">
@@ -30,25 +31,23 @@
   <cover-view class="commodity_screen" bindtap="hideModal" wx:if="{{showModalStatus}}"></cover-view>
     <!--弹出框  -->
     <cover-view animation="{{animationData}}" class="commodity_attr_box" wx:if="{{showModalStatus}}">
- 
       <cover-view class='placeBox'>
- 
-        <cover-view class='placeViewLt'>
-          <cover-view class='viewTitle'>{{myall.placeName}}</cover-view>
-          <cover-view class='viewDis'>{{myall.dis}}</cover-view>
-          <cover-view class='viewAddr'>{{myall.adr}}</cover-view>
-        </cover-view>
-        <cover-view class='placeViewRt'>
+        <!-- <cover-view class='placeViewLt' wx:for="{{oils}}" wx:key="key">
+          <cover-view class='viewTitle'>#{{item.oiltype}}: {{item.price}}</cover-view>
+          <cover-view class='viewDis'>{{item.price}}</cover-view>
+          <cover-view class='viewAddr'>{{item.cpPrice}}</cover-view>
+        </cover-view> -->
+        <!-- <cover-view class='placeViewRt'>
           <cover-image data-id="{{myall.id}}" bindtap="opendetail" src='/images/mk.png'></cover-image>
-        </cover-view>
+        </cover-view> -->
       </cover-view>
  
       <cover-view class='viewIcon'>
-        <cover-image class='indexIcon' src='/images/time.png'></cover-image>
+        <!-- <cover-image class='indexIcon' src='/images/time.png'></cover-image>
         <cover-view class='timeText'>{{myall.time}}</cover-view>
  
         <cover-image class='indexIcon1' data-id="{{myall}}" src='/images/share.png' bindtap='calling'></cover-image>
-        <cover-view class='timeText1' data-id="{{myall}}" bindtap='calling'>电话</cover-view>
+        <cover-view class='timeText1' data-id="{{myall}}" bindtap='calling'>电话</cover-view> -->
  
         <cover-image class='indexIcon2' src='/images/nav.png'></cover-image>
         <cover-view class='timeText1'>导航</cover-view>
