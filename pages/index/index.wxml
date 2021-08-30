@@ -39,7 +39,7 @@
             </cover-image>
             今日油价
           </cover-view>
-          <cover-view class='viewDis'>{{oilPrice.oil}}</cover-view>
+          <cover-view class='viewAddr'>{{oilPrice.oil}}</cover-view>
         </cover-view>
         <!-- <cover-view class='placeViewRt'>
           <cover-image data-id="{{myall.id}}" bindtap="opendetail" src='/images/mk.png'></cover-image>
