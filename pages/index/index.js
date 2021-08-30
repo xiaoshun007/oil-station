@@ -271,7 +271,7 @@ Page({
       },
       success: function(res) {
         console.log(res);
-        that.setOilPrice(res.data.content[0].prices);
+        that.setOilPrice(res.data.content[0]);
         that.setData({
           oils: res.data.content[0].prices
         });
@@ -358,15 +358,24 @@ Page({
     // console.log(markers)
   },
 
-  setOilPrice(prices) {
+   /**
+   * 设置加油站油价信息（点击地图标记弹窗）
+   *
+   * @param {object} content
+   */
+  setOilPrice(content) {
+    const prices = content.prices;
     const oilPrice = {
       oil: ""
     };
 
     for (let i = 0; i < prices.length; i++) {
-      oilPrice.oilType += prices[i].oiltype + ": " + prices[i].price;
+      oilPrice.oil += prices[i].oiltype + ": " + prices[i].price + "\n";
     }
     console.log(oilPrice)
+    this.setData({
+      oilPrice: oilPrice
+   });
   },
 
   /**

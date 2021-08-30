@@ -8,6 +8,7 @@
     bindcontroltap="controltap"
     markers="{{markers}}"
     data-id="{{markers}}"
+    include-points="{{markers}}"
     bindregionchange="regionchange"
     bindmarkertap="showMapModal"
     show-location> 
@@ -32,11 +33,14 @@
     <!--弹出框  -->
     <cover-view animation="{{animationData}}" class="commodity_attr_box" wx:if="{{showModalStatus}}">
       <cover-view class='placeBox'>
-        <!-- <cover-view class='placeViewLt' wx:for="{{oils}}" wx:key="key">
-          <cover-view class='viewTitle'>#{{item.oiltype}}: {{item.price}}</cover-view>
-          <cover-view class='viewDis'>{{item.price}}</cover-view>
-          <cover-view class='viewAddr'>{{item.cpPrice}}</cover-view>
-        </cover-view> -->
+        <cover-view class='placeViewLt'>
+          <cover-view class='viewTitle'>
+            <cover-image class='indexIcon2' src='/images/oil.png'>
+            </cover-image>
+            今日油价
+          </cover-view>
+          <cover-view class='viewDis'>{{oilPrice.oil}}</cover-view>
+        </cover-view>
         <!-- <cover-view class='placeViewRt'>
           <cover-image data-id="{{myall.id}}" bindtap="opendetail" src='/images/mk.png'></cover-image>
         </cover-view> -->
